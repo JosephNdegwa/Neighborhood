@@ -22,3 +22,12 @@ class Business(models.Model):
     business_email = models.CharField(max_length=100, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     neighbourhood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE, null=True)
+
+
+class Profile(models.Model):
+    profile_photo = models.ImageField(upload_to='profile/')
+    name = models.CharField(max_length=100, blank=True, null=True)
+    status = models.TextField(max_length=140, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    neighbourhood = models.ForeignKey(Neighbourhood, on_delete=models.CASCADE, null=True)
+    business = models.ForeignKey(Business, on_delete=models.CASCADE, null=True)
