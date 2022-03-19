@@ -20,6 +20,14 @@ class Business(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return self.name
+
+   #create_business()
+    #delete_business()
+    #find_business(business_id)
+    #update_business()
+
 
 class User(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
