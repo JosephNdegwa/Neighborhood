@@ -10,8 +10,8 @@ from django.contrib.auth import logout
 
 # Create your views here.
 def homepage(request):
-    title = 'Neighborhood'
-    return render(request, 'homepage.html', locals())
+    neighborhoods = Neighborhood.objects.all()
+    return render(request, 'homepage.html', {"neighborhoods":neighborhoods})
 
 
 
@@ -25,12 +25,11 @@ def signup(request):
             user = form.save()
             user.refresh_from_db()
             user.profile.email = form.cleaned_data.get('email')
-            user.profile.profile_photo = form.cleaned_data.get('profile_photo')
             user.profile.bio = form.cleaned_data.get('bio')
             user.save()
-            name = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=name, password=password)
+            user = authenticate(name=username, password=password)
             login(request, user)
             print("signed up")
             return redirect('homepage')

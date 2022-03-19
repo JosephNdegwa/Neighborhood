@@ -5,10 +5,9 @@ from .models import User, Business, Neighborhood
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=200, help_text="Enter a valid email address.")
-    profile_photo = forms.ImageField(label="Select a profile image")
-    bio = forms.CharField(max_length=500, label="Bio", help_text="Tell us about yourself.", widget=forms.Textarea(
-            attrs={"placeholder": "Add a description of yourself",}))
+    bio = forms.CharField(max_length=500, label="Neighborhood", help_text="Let us know which is your neighborhood.", widget=forms.Textarea(
+            attrs={"placeholder": "Please let us know which neighborhood you live in",}))
 
     class Meta:
         model = User
-        fields = ('name', 'email', 'password1', 'password2', 'profile_photo', 'bio')
+        fields = ('username', 'email', 'password1', 'password2', 'bio')

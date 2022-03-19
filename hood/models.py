@@ -11,7 +11,7 @@ class Neighborhood(models.Model):
     neighbourhood_name = models.CharField(max_length=100, blank=True, null=True)
     occupants_count = models.IntegerField(blank=True, null=True)
     neighbourhood_location = models.ForeignKey(Location, on_delete=models.CASCADE, blank=True, null=True)
-    admin = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Business(models.Model):
@@ -29,8 +29,14 @@ class Business(models.Model):
     #update_business()
 
 
-class User(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-    status = models.TextField(max_length=140, blank=True, null=True)
-    email = models.CharField(max_length=100, blank=True, null=True)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(max_length=500, blank=True)
+    email = models.EmailField(max_length=200)
     neighborhood_key = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.user.name
+
+
+    
