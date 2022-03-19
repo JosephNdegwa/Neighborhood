@@ -18,13 +18,11 @@ class Business(models.Model):
     business_name = models.CharField(max_length=100, blank=True, null=True)
     business_email = models.CharField(max_length=100, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    neighbourhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
+    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
 
 
 class User(models.Model):
-    profile_photo = models.ImageField(upload_to='profile/')
     name = models.CharField(max_length=100, blank=True, null=True)
     status = models.TextField(max_length=140, blank=True, null=True)
     email = models.CharField(max_length=100, blank=True, null=True)
-    neighbourhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
-    business = models.ForeignKey(Business, on_delete=models.CASCADE, null=True)
+    neighborhood_key = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)

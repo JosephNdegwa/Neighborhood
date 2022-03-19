@@ -4,8 +4,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.exceptions import *
-from .forms import SignUpForm, AddNeighborForm, NeighborForm
-from .models import Business, Neighborhood
+from .forms import SignUpForm
+from .models import User, Business, Neighborhood
 from django.contrib.auth import logout
 
 # Create your views here.
@@ -28,9 +28,9 @@ def signup(request):
             user.profile.profile_photo = form.cleaned_data.get('profile_photo')
             user.profile.bio = form.cleaned_data.get('bio')
             user.save()
-            username = form.cleaned_data.get('username')
+            name = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=name, password=password)
             login(request, user)
             print("signed up")
             return redirect('homepage')
