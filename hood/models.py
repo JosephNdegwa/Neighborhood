@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -15,13 +17,23 @@ class Neighborhood(models.Model):
 
 
 class Business(models.Model):
-    business_name = models.CharField(max_length=100, blank=True, null=True)
-    business_email = models.CharField(max_length=100, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    email = models.CharField(max_length=100, blank=True, null=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='owner')
+    neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='business')
 
     def __str__(self):
-        return self.name
+        return f'{self.name} Business'
+
+    def create_business(self):
+        self.save()
+
+    def delete_business(self):
+        self.delete()
+
+    @classmethod
+    def search_business(cls, name):
+        return cls.objects.filter(name__icontains=name).all()
 
    #create_business()
     #delete_business()
