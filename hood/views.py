@@ -2,13 +2,14 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.exceptions import *
-from .forms import SignUpForm
-from .models import User, Business, Neighborhood
+from .forms import SignUpForm, BusinessForm, NeighborhoodForm,PostForm
+from .models import Profile, Business, Neighborhood,Post
 from django.contrib.auth import logout
 
 # Create your views here.
+@login_required(login_url='login')
 def homepage(request):
     neighborhoods = Neighborhood.objects.all()
     return render(request, 'homepage.html', {"neighborhoods":neighborhoods})
@@ -38,3 +39,26 @@ def signup(request):
     else:
         form = SignUpForm()
         return render(request, 'registration/signup.html', {'form': form})
+
+def hoods(request):
+    my_hoods = Neighborhood.objects.all()
+    my_hoods = my_hoods[::-1]
+    params = {
+        'my_hoods': my_hoods,
+    }
+    return render(request, 'my_hoods.html', params)
+
+
+def create_hood(request):
+    if request.method == 'POST':
+        form = NeighborhoodForm(request.POST, request.FILES)
+        if form.is_valid():
+            hood = form.save(commit=False)
+            hood.admin = request.user.profile
+            hood.save()
+            return redirect('hood')
+    else:
+        form = NeighborhoodForm()
+    return render(request, 'newhood.html', {'form': form})
+
+
