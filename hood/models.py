@@ -1,4 +1,3 @@
-from turtle import title
 from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
@@ -8,7 +7,7 @@ from django.db.models.signals import post_save
 class Neighborhood(models.Model):
     name = models.CharField(max_length=100, blank=True, null=True)
     occupants_count = models.IntegerField(blank=True, null=True)
-    neighbourhood_location = models.ForeignKey(max_length=100)
+    neighbourhood_location = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
