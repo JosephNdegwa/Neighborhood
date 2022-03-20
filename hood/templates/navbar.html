@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand" href="{% url 'homepage' %}">Neighborhood</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -17,15 +17,12 @@
           <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
           </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-          </li>
           {% endif %}
       </ul>
       {% if user.is_authenticated %}
-      <form class="form-inline my-2 my-lg-0" role="search" action="{% url 'search-results' %}">
+      <form class="form-inline my-2 my-lg-0" role="search" >
         <input class="form-control mr-sm-2" type="search" placeholder="Search" name="project" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
       </form>
       {% endif %}
     </div>
