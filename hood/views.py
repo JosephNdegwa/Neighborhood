@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
@@ -9,7 +8,7 @@ from .models import Profile, Business, Neighborhood,Post
 from django.contrib.auth import logout
 
 # Create your views here.
-@login_required(login_url='login')
+
 def homepage(request):
     neighborhoods = Neighborhood.objects.all()
     return render(request, 'homepage.html', {"neighborhoods":neighborhoods})
