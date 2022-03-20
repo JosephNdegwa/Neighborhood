@@ -1,3 +1,4 @@
+from turtle import title
 from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
@@ -45,15 +46,6 @@ class Profile(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-class Post(models.Model):
-    name = models.CharField(max_length=100, blank=True, null=True)
-
-
-class Neighborhood(models.Model):
-    neighbourhood_name = models.CharField(max_length=100, blank=True, null=True)
-    occupants_count = models.IntegerField(blank=True, null=True)
-    neighbourhood_location = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Business(models.Model):
@@ -63,7 +55,7 @@ class Business(models.Model):
     neighborhood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='business')
 
     def __str__(self):
-        return f'{self.name} Business'
+        return f'{self.name} business'
 
     def create_business(self):
         self.save()
@@ -75,10 +67,14 @@ class Business(models.Model):
     def search_business(cls, name):
         return cls.objects.filter(name__icontains=name).all()
 
-   #create_business()
-    #delete_business()
-    #find_business(business_id)
-    #update_business()
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    post = models.TextField()
+    user = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='poster')
+    hood = models.ForeignKey(Neighborhood,on_delete=models.CASCADE,related_name='local_guy')
+
 
 
 
