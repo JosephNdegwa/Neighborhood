@@ -1,10 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from .forms import SignUpForm, BusinessForm, NeighborhoodForm,PostForm
+from .forms import SignUpForm, UpdateProfileForm, BusinessForm, NeighborhoodForm,PostForm
 from .models import Profile, Business, Neighborhood,Post
 from django.contrib.auth import logout
 
@@ -84,6 +84,74 @@ def single_hood(request, hood_id):
         'posts': posts
     }
     return render(request, 'single_hood.html', params)
+
+
+def hood_members(request, hood_id):
+    hood = Neighborhood.objects.get(id=hood_id)
+    members = Profile.objects.filter(neighborhood=hood)
+    return render(request, 'members.html', {'members': members})
+
+
+def create_post(request, hood_id):
+    hood = Neighborhood.objects.get(id=hood_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.hood = hood
+            post.user = request.user.profile
+            post.save()
+            return redirect('single-hood', hood.id)
+    else:
+        form = PostForm()
+    return render(request, 'post.html', {'form': form})
+
+
+def join_hood(request, id):
+    neighbourhood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighbourhood = neighbourhood
+    request.user.profile.save()
+    return redirect('hood')
+
+
+def leave_hood(request, id):
+    hood = get_object_or_404(Neighborhood, id=id)
+    request.user.profile.neighbourhood = None
+    request.user.profile.save()
+    return redirect('hood')
+
+
+def profile(request, username):
+    return render(request, 'profile.html')
+
+
+def edit_profile(request, username):
+    user = User.objects.get(username=username)
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', user.username)
+    else:
+        form = UpdateProfileForm(instance=request.user.profile)
+    return render(request, 'editprofile.html', {'form': form})
+
+
+def search_business(request):
+    if request.method == 'GET':
+        name = request.GET.get("title")
+        results = Business.objects.filter(name__icontains=name).all()
+        print(results)
+        message = f'name'
+        params = {
+            'results': results,
+            'message': message
+        }
+        return render(request, 'results.html', params)
+    else:
+        message = "You haven't searched for any category"
+    return render(request, "results.html")
+
 
 
 
