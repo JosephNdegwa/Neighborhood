@@ -29,7 +29,7 @@ def signup(request):
             user.save()
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            user = authenticate(name=username, password=password)
+            user = authenticate(username=username, password=password)
             login(request, user)
             print("signed up")
             return redirect('homepage')
@@ -120,8 +120,9 @@ def leave_hood(request, id):
     return redirect('hood')
 
 
-def profile(request, username):
-    return render(request, 'profile.html')
+def profile(request):
+    hoods = Neighborhood.objects.filter(user=request.user)
+    return render(request, 'profile.html',{"hoods":hoods})
 
 
 def edit_profile(request, username):
