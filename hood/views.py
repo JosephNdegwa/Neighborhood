@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from .emails import send_welcome_email
+from django.http import JsonResponse
 from django.contrib.auth.models import User
 from .forms import SignUpForm, UpdateProfileForm, BusinessForm, NeighborhoodForm,PostForm
-from .models import Profile, Business, Neighborhood,Post
+from .models import Profile, Business, Neighborhood,Post,NewMemberMail
 from django.contrib.auth import logout
 
 # Create your views here.
@@ -152,6 +154,17 @@ def search_business(request):
         message = "You haven't searched for any category"
     return render(request, "results.html")
 
+
+
+def hood_member(request):
+    name = request.POST.get('username')
+    email = request.POST.get('email')
+
+    recipient = NewMemberMail(name=name, email=email)
+    recipient.save()
+    send_welcome_email(name, email)
+    data = {'success': 'You have been successfully added to Neighborhood'}
+    return JsonResponse(data)
 
 
 

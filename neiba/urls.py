@@ -23,4 +23,5 @@ urlpatterns = [
     path('',include('hood.urls')),
     path('', include('django.contrib.auth.urls')),
     path('logout/',LogoutView.as_view(),{"next_page":'/'}),
+    
 ]
