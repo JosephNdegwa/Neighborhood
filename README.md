@@ -6,7 +6,7 @@ A django web application that allows users to register accounts see what's going
 Joseph Ndegwa
 
 ## Setup and installation
-Navigate to `remember to add live link` and serve on the web.
+Navigate to `https://hood420.herokuapp.com/` and serve on the web.
 
 ## Technologies
 * Python
